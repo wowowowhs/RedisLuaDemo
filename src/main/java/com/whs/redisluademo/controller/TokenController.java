@@ -19,7 +19,6 @@ public class TokenController {
     @RequestMapping("/save")
     public String savetoken(){
 
-//        public Number saveToken(String key, String token,  double score, int expires, int size, long currentTime) {
         String key = "token:save";
         String token = RandomStringUtils.randomAlphanumeric(10);
 
