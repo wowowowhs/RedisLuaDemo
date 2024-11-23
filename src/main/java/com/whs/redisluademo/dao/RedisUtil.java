@@ -8,12 +8,14 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.Collections;
 
 @Component
 public class RedisUtil {
 
     private DefaultRedisScript<Long> redisScript;
+    private DefaultRedisScript<Long> testLuaScript;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -23,6 +25,11 @@ public class RedisUtil {
         redisScript = new DefaultRedisScript<>();
         redisScript.setResultType(Long.class);
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("redis/save_token.lua")));
+
+        testLuaScript = new DefaultRedisScript<>();
+        testLuaScript.setResultType(Long.class);
+        testLuaScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("redis/test_lua_script.lua")));
+
     }
 
     public Object saveToken(String key, String token,  double score, int expires, int size, long currentTime) {
@@ -40,5 +47,9 @@ public class RedisUtil {
 
     }
 
-
+    public void testLua(String key1, String key2) {
+        String arg = "arg_test";
+        Long number = (Long) redisTemplate.execute(testLuaScript, Arrays.asList(key1, key2), arg);
+        System.out.println("test lua res:" + number);
+    }
 }

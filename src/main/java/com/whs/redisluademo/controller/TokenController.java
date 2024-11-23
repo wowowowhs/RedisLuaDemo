@@ -18,7 +18,6 @@ public class TokenController {
 
     @RequestMapping("/save")
     public String savetoken(){
-
         String key = "token:save";
         String token = RandomStringUtils.randomAlphanumeric(10);
 
@@ -30,7 +29,12 @@ public class TokenController {
 
         long currentTime = 100000;
         redisUtil.saveToken(key,token,score,expire,size,currentTime);
+        return null;
+    }
 
+    @RequestMapping("/testLua")
+    public String testLua(){
+        redisUtil.testLua("whs", "woohs");
         return null;
     }
 
